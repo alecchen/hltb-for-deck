@@ -49,11 +49,14 @@ const useHltb = (appId: number, game: string, serverApi: ServerAPI) => {
     };
     useEffect(() => {
         const getData = async () => {
+            console.log('run useHltb');
             const cache = await getCache<HLTBStats>(`${appId}`);
             if (cache && !needCacheUpdate(cache.lastUpdatedAt)) {
                 setStats(cache);
+            } else if (game.trim() == '') {
+                return;
             } else {
-                console.log(`get HLTB data for ${appId} and ${game}`);
+                console.log(`get HLTB data for ${appId} and '${game}'`);
                 const res: ServerResponse<HLTBResult> =
                     await serverApi.fetchNoCors<HLTBResult>(
                         'https://howlongtobeat.com/api/search',
@@ -147,7 +150,7 @@ const useHltb = (appId: number, game: string, serverApi: ServerAPI) => {
         if (appId) {
             getData();
         }
-    }, [appId]);
+    }, [appId, game]);
 
     return {
         ...stats,

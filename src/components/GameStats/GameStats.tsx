@@ -1,5 +1,6 @@
 import { DialogButtonPrimary, Navigation, ServerAPI } from 'decky-frontend-lib';
 import useHltb from '../../hooks/useHltb';
+import useSteam from '../../hooks/useSteam';
 import { usePreference, useStyle } from '../../hooks/useStyle';
 import style from './style';
 
@@ -11,8 +12,9 @@ type GameStatsProps = {
 };
 
 export const GameStats = ({ serverApi, game, appId, id }: GameStatsProps) => {
+    const { new_game } = useSteam(appId, game, serverApi);
     const { mainStat, mainPlusStat, completeStat, allStylesStat, gameId } =
-        useHltb(appId, game, serverApi);
+        useHltb(appId, new_game, serverApi);
     const hltbStyle = useStyle();
     const hideDetails = usePreference();
     const baseClass = hltbStyle === null ? 'hltb-info-absolute' : 'hltb-info';
